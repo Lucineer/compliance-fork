@@ -1,477 +1,617 @@
-const html = `<!DOCTYPE html>
+interface Env {
+    // Environment variables can be defined here
+}
+
+const html = `
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EU AI Act Audit Vessel</title>
+    <title>Compliance Fork - EU AI Act Audit Vessel</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
         body {
             font-family: 'Inter', sans-serif;
-            background: #0a0a0f;
-            color: #f0f0f0;
+            background-color: #0a0a0f;
+            color: #f8fafc;
             line-height: 1.6;
-            overflow-x: hidden;
+            min-height: 100vh;
         }
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Hero Section */
         .hero {
-            min-height: 90vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            padding: 80px 0;
             text-align: center;
-            padding: 40px 20px;
-            background: linear-gradient(135deg, #0a0a0f 0%, #151522 100%);
+            border-bottom: 1px solid #1e293b;
         }
-        h1 {
+        
+        .hero h1 {
             font-size: 3.5rem;
             font-weight: 700;
-            margin-bottom: 1rem;
-            background: linear-gradient(90deg, #ef4444, #ff6b6b);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-        .subtitle {
-            font-size: 1.3rem;
-            color: #aaa;
-            max-width: 700px;
-            margin-bottom: 2.5rem;
-        }
-        .btn {
-            display: inline-block;
-            background: #ef4444;
-            color: white;
-            padding: 14px 32px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
-            border: none;
-            cursor: pointer;
-        }
-        .btn:hover { background: #dc2626; transform: translateY(-2px); }
-        section { padding: 80px 20px; }
-        .section-title {
-            font-size: 2.5rem;
-            margin-bottom: 3rem;
-            text-align: center;
-            color: #fff;
-        }
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-        }
-        .card {
-            background: #151522;
-            border-radius: 12px;
-            padding: 30px;
-            border-left: 4px solid #ef4444;
-            transition: transform 0.3s;
-        }
-        .card:hover { transform: translateY(-5px); }
-        .card h3 { font-size: 1.5rem; margin-bottom: 15px; color: #fff; }
-        .card p { color: #bbb; }
-        .timeline {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        .timeline-item {
-            background: #151522;
-            padding: 25px;
-            border-radius: 10px;
             margin-bottom: 20px;
-            border-left: 4px solid #ef4444;
+            background: linear-gradient(135deg, #f8fafc 0%, #cbd5e1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
-        .risk-tiers {
+        
+        .hero-tagline {
+            font-size: 1.5rem;
+            color: #94a3b8;
+            margin-bottom: 40px;
+        }
+        
+        .accent {
+            color: #ef4444;
+        }
+        
+        /* Sections */
+        .section {
+            padding: 60px 0;
+            border-bottom: 1px solid #1e293b;
+        }
+        
+        .section-title {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 30px;
+            color: #f1f5f9;
+        }
+        
+        /* Timeline */
+        .timeline {
             display: flex;
             flex-wrap: wrap;
-            justify-content: center;
             gap: 20px;
-            margin-top: 40px;
+            margin-top: 30px;
         }
-        .tier {
-            background: #151522;
-            padding: 25px;
-            border-radius: 10px;
+        
+        .timeline-item {
             flex: 1;
-            min-width: 200px;
-            text-align: center;
-        }
-        .tier.high { border-top: 4px solid #ef4444; }
-        .tier.limited { border-top: 4px solid #f59e0b; }
-        .tier.minimal { border-top: 4px solid #10b981; }
-        .dashboard {
-            background: #151522;
-            border-radius: 12px;
-            padding: 30px;
-            margin-top: 40px;
-        }
-        .monitor {
-            display: inline-block;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: #10b981;
-            margin-right: 8px;
-            animation: pulse 2s infinite;
-        }
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.5; }
-            100% { opacity: 1; }
-        }
-        footer {
-            background: #05050a;
-            padding: 40px 20px;
-            text-align: center;
-            color: #888;
-            margin-top: 60px;
-        }
-        .footer-links { margin-top: 20px; }
-        .footer-links a { color: #aaa; margin: 0 15px; text-decoration: none; }
-        .footer-links a:hover { color: #ef4444; }
-        code {
+            min-width: 250px;
             background: #1e1e2e;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-family: monospace;
-            color: #f8b4d9;
+            padding: 25px;
+            border-radius: 12px;
+            border-left: 4px solid #ef4444;
         }
-        .endpoint {
-            background: #1a1a2e;
+        
+        .timeline-date {
+            color: #ef4444;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        /* Risk Tiers */
+        .risk-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .risk-card {
+            background: #1e1e2e;
+            padding: 25px;
+            border-radius: 12px;
+            transition: transform 0.3s ease;
+        }
+        
+        .risk-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .risk-card.unacceptable {
+            border-top: 4px solid #ef4444;
+        }
+        
+        .risk-card.high {
+            border-top: 4px solid #f97316;
+        }
+        
+        .risk-card.limited {
+            border-top: 4px solid #eab308;
+        }
+        
+        .risk-card.minimal {
+            border-top: 4px solid #22c55e;
+        }
+        
+        .risk-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        /* Features */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        
+        .feature-card {
+            background: #1e1e2e;
+            padding: 25px;
+            border-radius: 12px;
+        }
+        
+        .feature-icon {
+            color: #ef4444;
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+        
+        /* Dashboard Preview */
+        .dashboard-preview {
+            background: #1e1e2e;
+            padding: 30px;
+            border-radius: 12px;
+            margin-top: 30px;
+            overflow-x: auto;
+        }
+        
+        .dashboard-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .dashboard-table th {
+            text-align: left;
             padding: 15px;
+            background: #2d2d44;
+            color: #f1f5f9;
+            font-weight: 600;
+        }
+        
+        .dashboard-table td {
+            padding: 15px;
+            border-bottom: 1px solid #334155;
+        }
+        
+        .status-badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        
+        .status-compliant {
+            background: #14532d;
+            color: #86efac;
+        }
+        
+        .status-violation {
+            background: #7f1d1d;
+            color: #fca5a5;
+        }
+        
+        /* Checklist */
+        .checklist {
+            background: #1e1e2e;
+            padding: 30px;
+            border-radius: 12px;
+            margin-top: 30px;
+        }
+        
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #334155;
+        }
+        
+        .checklist-item:last-child {
+            border-bottom: none;
+        }
+        
+        .checklist-checkbox {
+            width: 20px;
+            height: 20px;
+            margin-right: 15px;
+            accent-color: #ef4444;
+        }
+        
+        /* API Section */
+        .api-endpoints {
+            background: #1e1e2e;
+            padding: 30px;
+            border-radius: 12px;
+            margin-top: 30px;
+        }
+        
+        .endpoint {
+            background: #2d2d44;
+            padding: 20px;
             border-radius: 8px;
-            margin: 15px 0;
+            margin-bottom: 15px;
             font-family: monospace;
-            color: #7dd3fc;
+        }
+        
+        .method {
+            display: inline-block;
+            padding: 5px 10px;
+            background: #ef4444;
+            color: white;
+            border-radius: 4px;
+            font-weight: 600;
+            margin-right: 10px;
+        }
+        
+        /* Footer */
+        .footer {
+            padding: 40px 0;
+            text-align: center;
+            color: #94a3b8;
+        }
+        
+        .footer a {
+            color: #ef4444;
+            text-decoration: none;
+        }
+        
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero-tagline {
+                font-size: 1.2rem;
+            }
+            
+            .section {
+                padding: 40px 0;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="hero">
-        <h1>EU AI Act Audit Vessel</h1>
-        <p class="subtitle">Real‑time compliance monitoring for AI systems. Watches parent vessels, detects violations, and generates audit reports aligned with the EU AI Act.</p>
-        <a href="#how" class="btn">How It Works</a>
-        <div style="margin-top: 40px;">
-            <span class="monitor"></span> <span style="color:#10b981;">Live monitoring active</span>
-        </div>
-    </div>
-
-    <section id="how">
-        <div class="container">
-            <h2 class="section-title">How It Works</h2>
-            <div class="grid">
-                <div class="card">
-                    <h3>1. Watch</h3>
-                    <p>Provide a vessel URL. The audit vessel attaches as a sidecar and begins continuous monitoring.</p>
-                </div>
-                <div class="card">
-                    <h3>2. Analyze</h3>
-                    <p>Checks transparency, human oversight, logging, risk classification, and data handling in real‑time.</p>
-                </div>
-                <div class="card">
-                    <h3>3. Report</h3>
-                    <p>Generates compliance reports (JSON + HTML) and auto‑creates a <code>compliance.md</code> file.</p>
-                </div>
-                <div class="card">
-                    <h3>4. Alert</h3>
-                    <p>Immediate notification on any violation. Historical logs stored in KV for audit trails.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section style="background: #05050a;">
-        <div class="container">
+    <div class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1>Compliance Fork</h1>
+            <p class="hero-tagline">Watch any vessel. Report violations. Ship proof.</p>
+            <p style="color: #64748b; max-width: 800px; margin: 0 auto;">
+                Real-time compliance monitoring for EU AI Act enforcement. 
+                Continuous audit infrastructure for AI systems in high-risk domains.
+            </p>
+        </section>
+        
+        <!-- EU AI Act Timeline -->
+        <section class="section">
             <h2 class="section-title">EU AI Act Timeline</h2>
             <div class="timeline">
                 <div class="timeline-item">
-                    <h3>2024 – Entry into force</h3>
-                    <p>The Act becomes applicable 24 months after entry into force, with some provisions earlier.</p>
+                    <div class="timeline-date">June 2024</div>
+                    <p>Act enters into force</p>
                 </div>
                 <div class="timeline-item">
-                    <h3>2025 – High‑risk systems</h3>
-                    <p>Obligations for high‑risk AI systems apply 36 months after entry into force.</p>
+                    <div class="timeline-date">August 2024</div>
+                    <p>Prohibitions apply</p>
                 </div>
                 <div class="timeline-item">
-                    <h3>2026 – Full enforcement</h3>
-                    <p>General‑purpose AI rules apply 12 months after entry, bans 6 months after.</p>
+                    <div class="timeline-date">August 2026</div>
+                    <p><span class="accent">High-risk AI systems enforcement</span></p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">August 2027</div>
+                    <p>General-purpose AI rules apply</p>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <section>
-        <div class="container">
-            <h2 class="section-title">Risk Tier Classification</h2>
-            <div class="risk-tiers">
-                <div class="tier high">
-                    <h3>High‑Risk</h3>
-                    <p>Biometrics, critical infrastructure, education, employment. Strict compliance required.</p>
+        </section>
+        
+        <!-- Risk Tiers -->
+        <section class="section">
+            <h2 class="section-title">Risk Tiers</h2>
+            <div class="risk-grid">
+                <div class="risk-card unacceptable">
+                    <div class="risk-title">Unacceptable Risk</div>
+                    <p>Social scoring, manipulative AI. Banned.</p>
                 </div>
-                <div class="tier limited">
-                    <h3>Limited Risk</h3>
-                    <p>Chatbots, emotion recognition. Transparency obligations only.</p>
+                <div class="risk-card high">
+                    <div class="risk-title">High Risk</div>
+                    <p>Critical infrastructure, education, employment. Strict compliance required.</p>
                 </div>
-                <div class="tier minimal">
-                    <h3>Minimal Risk</h3>
-                    <p>Most AI systems. No specific obligations, voluntary codes.</p>
+                <div class="risk-card limited">
+                    <div class="risk-title">Limited Risk</div>
+                    <p>Chatbots, emotion recognition. Transparency obligations.</p>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <section style="background: #05050a;">
-        <div class="container">
-            <h2 class="section-title">Real‑Time Dashboard</h2>
-            <div class="dashboard">
-                <p>Live compliance checks across the fleet. Use the API endpoints to integrate.</p>
-                <div class="endpoint">POST /api/audit – Run compliance check against a vessel URL</div>
-                <div class="endpoint">GET /api/report – Generate compliance report (JSON + HTML)</div>
-                <div class="endpoint">POST /api/watch – Set up continuous monitoring</div>
-                <div class="endpoint">GET /vessel.json – Fleet metadata</div>
-                <div style="margin-top: 30px;">
-                    <a href="#try" class="btn">Try API Example</a>
+                <div class="risk-card minimal">
+                    <div class="risk-title">Minimal Risk</div>
+                    <p>Spam filters, AI video games. No restrictions.</p>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <section id="try">
-        <div class="container">
-            <h2 class="section-title">API Example</h2>
-            <div class="card">
-                <h3>Quick Audit</h3>
-                <p>Send a POST request to <code>/api/audit</code> with a JSON body:</p>
+        </section>
+        
+        <!-- What We Check -->
+        <section class="section">
+            <h2 class="section-title">What We Check</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🔍</div>
+                    <h3>Transparency</h3>
+                    <p>Documentation, explainability, and user information requirements.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">👁️</div>
+                    <h3>Human Oversight</h3>
+                    <p>Human-in-the-loop mechanisms and override capabilities.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Logging & Audit</h3>
+                    <p>Automated logging of AI system operations and decisions.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚠️</div>
+                    <h3>Risk Classification</h3>
+                    <p>Proper categorization according to EU AI Act Annexes.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🛡️</div>
+                    <h3>Data Governance</h3>
+                    <p>Training data quality, privacy, and bias mitigation.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚖️</div>
+                    <h3>Conformity Assessment</h3>
+                    <p>Technical documentation and quality management systems.</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Live Dashboard -->
+        <section class="section">
+            <h2 class="section-title">Live Dashboard</h2>
+            <div class="dashboard-preview">
+                <table class="dashboard-table">
+                    <thead>
+                        <tr>
+                            <th>Vessel ID</th>
+                            <th>System Type</th>
+                            <th>Risk Level</th>
+                            <th>Last Audit</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>CV-001</td>
+                            <td>Recruitment AI</td>
+                            <td>High</td>
+                            <td>2024-03-15</td>
+                            <td><span class="status-badge status-violation">Violation</span></td>
+                        </tr>
+                        <tr>
+                            <td>CV-002</td>
+                            <td>Medical Diagnostic</td>
+                            <td>High</td>
+                            <td>2024-03-14</td>
+                            <td><span class="status-badge status-compliant">Compliant</span></td>
+                        </tr>
+                        <tr>
+                            <td>CV-003</td>
+                            <td>Credit Scoring</td>
+                            <td>High</td>
+                            <td>2024-03-14</td>
+                            <td><span class="status-badge status-violation">Violation</span></td>
+                        </tr>
+                        <tr>
+                            <td>CV-004</td>
+                            <td>Chat Support</td>
+                            <td>Limited</td>
+                            <td>2024-03-13</td>
+                            <td><span class="status-badge status-compliant">Compliant</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        
+        <!-- Compliance Checklist -->
+        <section class="section">
+            <h2 class="section-title">Compliance Checklist</h2>
+            <div class="checklist">
+                <div class="checklist-item">
+                    <input type="checkbox" class="checklist-checkbox" checked>
+                    <span>Risk classification system implemented</span>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" class="checklist-checkbox" checked>
+                    <span>Technical documentation maintained</span>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" class="checklist-checkbox">
+                    <span>Quality management system in place</span>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" class="checklist-checkbox" checked>
+                    <span>Automated logging enabled</span>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" class="checklist-checkbox">
+                    <span>Human oversight mechanisms</span>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" class="checklist-checkbox" checked>
+                    <span>Transparency disclosures</span>
+                </div>
+            </div>
+        </section>
+        
+        <!-- API Endpoints -->
+        <section class="section">
+            <h2 class="section-title">API Endpoints</h2>
+            <div class="api-endpoints">
                 <div class="endpoint">
-                    {"url": "https://your‑vessel.example", "checks": ["transparency", "logging"]}
+                    <span class="method">GET</span>
+                    <span>/api/audit?url={vessel-url}</span>
+                    <p style="margin-top: 10px; color: #94a3b8;">Check compliance status of a vessel URL</p>
                 </div>
-                <p>Returns a compliance score and violation details.</p>
+                <div class="endpoint">
+                    <span class="method">GET</span>
+                    <span>/api/report?id={audit-id}</span>
+                    <p style="margin-top: 10px; color: #94a3b8;">Generate detailed compliance report</p>
+                </div>
+                <div class="endpoint">
+                    <span class="method">GET</span>
+                    <span>/health</span>
+                    <p style="margin-top: 10px; color: #94a3b8;">Service health check</p>
+                </div>
             </div>
-        </div>
-    </section>
-
-    <footer>
-        <div class="container">
-            <p><i style="color:#888">Built with <a href="https://github.com/Lucineer/cocapn-ai" style="color:#ef4444">Cocapn</a> — the open‑source agent runtime.</i></p>
-            <div class="footer-links">
-                <a href="/">Home</a>
-                <a href="/health">Health</a>
-                <a href="/vessel.json">Metadata</a>
-                <a href="https://github.com">GitHub</a>
-            </div>
-            <p style="margin-top: 20px; font-size: 0.9rem;">© 2025 EU AI Act Audit Vessel. For compliance‑first AI deployment.</p>
-        </div>
-    </footer>
+        </section>
+        
+        <!-- Footer -->
+        <footer class="footer">
+            <p><i style="color:#888">Built with <a href="https://github.com/Lucineer/cocapn-ai" style="color:#ef4444">Cocapn</a></i></p>
+            <p style="margin-top: 10px; font-size: 0.9rem;">
+                Compliance Fork © 2024 | EU AI Act Audit Vessel
+            </p>
+        </footer>
+    </div>
 </body>
-</html>`;
-
-interface AuditRequest {
-  url: string;
-  checks?: string[];
-}
-
-interface WatchConfig {
-  url: string;
-  interval: number;
-  lastChecked: number;
-}
-
-interface AuditResult {
-  url: string;
-  timestamp: number;
-  score: number;
-  violations: string[];
-  details: {
-    transparency: boolean;
-    humanOversight: boolean;
-    logging: boolean;
-    riskClassification: string;
-    dataHandling: boolean;
-  };
-}
-
-export default {
-  async fetch(request: Request, env: any): Promise<Response> {
-    const url = new URL(request.url);
-    const path = url.pathname;
-
-    // Security headers
-    const securityHeaders = {
-      'Content-Security-Policy': "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; frame-ancestors 'none'",
-      'X-Frame-Options': 'DENY',
-      'X-Content-Type-Options': 'nosniff',
-      'Referrer-Policy': 'strict-origin-when-cross-origin',
-    };
-
-    // Landing page
-    if (path === '/' || path === '') {
-      return new Response(html, {
-        headers: { 'Content-Type': 'text/html;charset=UTF-8', ...securityHeaders },
-      });
-    }
-
-    // Health endpoint
-    if (path === '/health') {
-      return new Response(JSON.stringify({ status: 'ok', timestamp: Date.now() }), {
-        headers: { 'Content-Type': 'application/json', ...securityHeaders },
-      });
-    }
-
-    // Vessel metadata
-    if (path === '/vessel.json') {
-      const metadata = {
-        name: 'EU AI Act Audit Vessel',
-        version: '1.0.0',
-        description: 'Real‑time compliance monitoring for AI systems',
-        endpoints: ['/api/audit', '/api/report', '/api/watch', '/health', '/vessel.json'],
-        compliance: {
-          framework: 'EU AI Act',
-          checks: ['transparency', 'human oversight', 'logging', 'risk classification', 'data handling'],
-        },
-      };
-      return new Response(JSON.stringify(metadata, null, 2), {
-        headers: { 'Content-Type': 'application/json', ...securityHeaders },
-      });
-    }
-
-    // API: Audit
-    if (path === '/api/audit' && request.method === 'POST') {
-      try {
-        const body: AuditRequest = await request.json();
-        if (!body.url) {
-          return new Response(JSON.stringify({ error: 'Missing url' }), { status: 400, headers: securityHeaders });
-        }
-
-        // Simulate compliance checks
-        const checks = body.checks || ['transparency', 'human oversight', 'logging', 'risk classification', 'data handling'];
-        const violations: string[] = [];
-        const details = {
-          transparency: Math.random() > 0.3,
-          humanOversight: Math.random() > 0.4,
-          logging: Math.random() > 0.2,
-          riskClassification: ['high', 'limited', 'minimal'][Math.floor(Math.random() * 3)],
-          dataHandling: Math.random() > 0.3,
-        };
-
-        if (!details.transparency) violations.push('Transparency: User cannot see reasoning');
-        if (!details.humanOversight) violations.push('Human oversight: No intervention mechanism');
-        if (!details.logging) violations.push('Logging: Actions not recorded');
-        if (details.riskClassification === 'high') violations.push('Risk classification: High‑risk system');
-        if (!details.dataHandling) violations.push('Data handling: Non‑compliant data processing');
-
-        const score = Math.max(0, 100 - violations.length * 20);
-
-        const result: AuditResult = {
-          url: body.url,
-          timestamp: Date.now(),
-          score,
-          violations,
-          details,
-        };
-
-        // Store in KV if available
-        if (env.AUDIT_KV) {
-          const key = `audit:${Date.now()}:${body.url.replace(/[^a-z0-9]/gi, '_')}`;
-          await env.AUDIT_KV.put(key, JSON.stringify(result), { expirationTtl: 604800 }); // 7 days
-        }
-
-        return new Response(JSON.stringify(result, null, 2), {
-          headers: { 'Content-Type': 'application/json', ...securityHeaders },
-        });
-      } catch (e) {
-        return new Response(JSON.stringify({ error: 'Invalid JSON' }), { status: 400, headers: securityHeaders });
-      }
-    }
-
-    // API: Report
-    if (path === '/api/report' && request.method === 'GET') {
-      const reportUrl = url.searchParams.get('url');
-      if (!reportUrl) {
-        return new Response(JSON.stringify({ error: 'Missing url query parameter' }), { status: 400, headers: securityHeaders });
-      }
-
-      // Simulate fetching existing audit
-      const report = {
-        url: reportUrl,
-        generated: Date.now(),
-        compliance: {
-          score: 85,
-          tier: 'limited',
-          passed: ['transparency', 'logging'],
-          failed: ['human oversight'],
-        },
-        recommendations: [
-          'Implement human‑override mechanism',
-          'Document data provenance',
-          'Maintain audit logs for 5 years',
-        ],
-        html: `<html><body><h1>Compliance Report for ${reportUrl}</h1><p>Score: 85/100</p></body></html>`,
-      };
-
-      // Auto‑generate compliance.md content
-      const complianceMD = `# Compliance Report
-**Vessel**: ${reportUrl}
-**Date**: ${new Date().toISOString()}
-**Score**: ${report.compliance.score}/100
-
-## Checks
-- Transparency: ✅
-- Human oversight: ⚠️
-- Logging: ✅
-- Risk classification: ${report.compliance.tier}
-- Data handling: ✅
-
-## Recommendations
-${report.recommendations.map(r => `- ${r}`).join('\n')}
+</html>
 `;
 
-      const response = {
-        ...report,
-        markdown: complianceMD,
-      };
+export default {
+    async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
+        const url = new URL(request.url);
+        const path = url.pathname;
 
-      return new Response(JSON.stringify(response, null, 2), {
-        headers: { 'Content-Type': 'application/json', ...securityHeaders },
-      });
-    }
-
-    // API: Watch
-    if (path === '/api/watch' && request.method === 'POST') {
-      try {
-        const body: WatchConfig = await request.json();
-        if (!body.url) {
-          return new Response(JSON.stringify({ error: 'Missing url' }), { status: 400, headers: securityHeaders });
-        }
-
-        const config: WatchConfig = {
-          url: body.url,
-          interval: body.interval || 3600,
-          lastChecked: Date.now(),
+        // Set security headers
+        const securityHeaders = {
+            'Content-Security-Policy': "default-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com;",
+            'X-Frame-Options': 'DENY',
+            'X-Content-Type-Options': 'nosniff',
+            'Referrer-Policy': 'strict-origin-when-cross-origin',
         };
 
-        // Store in KV if available
-        if (env.WATCH_KV) {
-          const key = `watch:${body.url.replace(/[^a-z0-9]/gi, '_')}`;
-          await env.WATCH_KV.put(key, JSON.stringify(config));
+        // Route handling
+        if (path === '/' || path === '/index.html') {
+            return new Response(html, {
+                status: 200,
+                headers: {
+                    'Content-Type': 'text/html; charset=utf-8',
+                    ...securityHeaders
+                }
+            });
         }
 
-        return new Response(JSON.stringify({ success: true, message: `Watching ${body.url}`, config }), {
-          headers: { 'Content-Type': 'application/json', ...securityHeaders },
-        });
-      } catch (e) {
-        return new Response(JSON.stringify({ error: 'Invalid JSON' }), { status: 400, headers: securityHeaders });
-      }
-    }
+        if (path === '/health') {
+            return new Response(JSON.stringify({ status: 'ok', timestamp: new Date().toISOString() }), {
+                status: 200,
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...securityHeaders
+                }
+            });
+        }
 
-    // 404
-    return new Response('Not Found', { status: 404, headers: securityHeaders });
-  },
+        if (path === '/api/audit') {
+            const vesselUrl = url.searchParams.get('url');
+            if (!vesselUrl) {
+                return new Response(JSON.stringify({ error: 'Missing vessel URL parameter' }), {
+                    status: 400,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        ...securityHeaders
+                    }
+                });
+            }
+
+            // Mock audit response
+            const mockAudit = {
+                id: `audit_${Date.now()}`,
+                url: vesselUrl,
+                timestamp: new Date().toISOString(),
+                riskLevel: Math.random() > 0.5 ? 'high' : 'limited',
+                complianceScore: Math.floor(Math.random() * 100),
+                violations: [
+                    {
+                        code: 'ART_13',
+                        description: 'Transparency documentation incomplete',
+                        severity: 'medium'
+                    }
+                ],
+                status: Math.random() > 0.3 ? 'compliant' : 'violation'
+            };
+
+            return new Response(JSON.stringify(mockAudit), {
+                status: 200,
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...securityHeaders
+                }
+            });
+        }
+
+        if (path === '/api/report') {
+            const auditId = url.searchParams.get('id');
+            if (!auditId) {
+                return new Response(JSON.stringify({ error: 'Missing audit ID parameter' }), {
+                    status: 400,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        ...securityHeaders
+                    }
+                });
+            }
+
+            // Mock report response
+            const mockReport = {
+                id: auditId,
+                generatedAt: new Date().toISOString(),
+                summary: {
+                    totalChecks: 42,
+                    passed: 35,
+                    failed: 7,
+                    complianceRate: 83.3
+                },
+                details: {
+                    transparency: { passed: true, score: 85 },
+                    humanOversight: { passed: false, score: 45 },
+                    logging: { passed: true, score: 92 },
+                    riskClassification: { passed: true, score: 88 },
+                    dataHandling: { passed: false, score: 60 }
+                },
+                recommendations: [
+                    'Implement human oversight mechanisms',
+                    'Improve data governance documentation'
+                ]
+            };
+
+            return new Response(JSON.stringify(mockReport), {
+                status: 200,
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...securityHeaders
+                }
+            });
+        }
+
+        // 404 for unknown routes
+        return new Response('Not Found', {
+            status: 404,
+            headers: securityHeaders
+        });
+    }
 };
