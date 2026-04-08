@@ -1,0 +1,19 @@
+{
+  "name": "compliance-fork",
+  "description": "EU AI Act audit vessel \u2014 watches parent vessel, reports violations in real time",
+  "color": "#ef4444",
+  "icon": "\u2696\ufe0f",
+  "endpoints": [
+    "/",
+    "/health",
+    "/vessel.json"
+  ],
+  "capabilities": [
+    "compliance",
+    "eu-ai-act",
+    "audit",
+    "regulatory"
+  ],
+  "fleet": "cocapn",
+  "version": "0.1.0"
+}
